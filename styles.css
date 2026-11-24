@@ -177,7 +177,7 @@ section[id] { scroll-margin-top: 96px; }
 .qa summary::-webkit-details-marker { display: none; }
 .qa summary::after { content: "+"; font: 300 26px/1 Inter, sans-serif; color: var(--grey-2); }
 .qa details[open] summary::after { content: "−"; }
-.qa details p { margin: 14px 0 0; font-size: 15.5px; line-height: 1.6; color: var(--text); max-width: 62ch; }
+.qa details p { margin: 14px 0 0; font-size: 15.5px; line-height: 1.6; color: var(--text); max-width: 62ch; text-align: justify; hyphens: auto; }
 
 /* bloc final */
 .final { position: relative; padding: 120px 0 110px; text-align: center; color: #fff; isolation: isolate; overflow: hidden;
