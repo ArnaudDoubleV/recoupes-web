@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recoupe · L'IA sur mesure des boutiques de M&amp;A</title>
+  <meta name="description" content="Nous concevons et construisons, avec vos équipes, les outils d'IA des boutiques de M&amp;A et des cabinets de transaction services.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="ab.css?v=1">
+  <link rel="stylesheet" href="cas.css?v=29">
+</head>
+<body>
+
+<!-- ============ MENU : raccourcis vers les sections de la page, un seul bouton ============ -->
+<header class="nav">
+  <div class="nav-in wrap">
+    <a class="brand" href="#haut" aria-label="Recoupe, haut de page">
+      <svg width="34" height="27" viewBox="0 0 76 60" aria-hidden="true">
+        <defs>
+          <clipPath id="mk-c"><circle cx="28" cy="30" r="18"/></clipPath>
+          <linearGradient id="mk-g" x1="0" y1="12" x2="0" y2="48" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F6C9B4"/><stop offset="1" stop-color="#A8341F"/></linearGradient>
+        </defs>
+        <circle class="ring" cx="28" cy="30" r="18" fill="none" stroke-width="2.6"/>
+        <circle class="ring" cx="48" cy="30" r="18" fill="none" stroke-width="2.6"/>
+        <circle cx="48" cy="30" r="18" fill="url(#mk-g)" clip-path="url(#mk-c)"/>
+      </svg>
+      recoupe
+    </a>
+    <nav class="nav-links" aria-label="Sections de la page">
+      <a href="#cas">Cas d'usage</a>
+      <a href="#etude">Étude de cas</a>
+      <a href="#equipe">Équipe</a>
+      <a href="#securite">Confidentialité</a>
+    </nav>
+    <a class="btn btn-sm" href="#rdv">Réserver un appel</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HAUT DE PAGE : illustration du couloir ============ -->
+<section class="hero" id="haut" data-fond="reunion" data-photos="actuel">
+  <div class="hero-par"><img class="hero-bg" src="assets/reunion.webp" alt="" fetchpriority="high"></div>
+  <canvas class="ab-rideau" aria-hidden="true"></canvas>
+  <div class="ab-veil" aria-hidden="true"></div>
+  <div class="ab-sun" aria-hidden="true" style="left:52%;top:30%;width:640px;height:460px"></div>
+  <div class="hero-edge" aria-hidden="true"></div>
+  <div class="hero-scrim"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-in wrap">
+    <div class="ab-grid">
+      <div class="hero-copy">
+        <h1 class="h1">L'IA sur mesure des boutiques de M&amp;A.</h1>
+        <p class="lead">Génération d'IM, relecture de VDD, socle d'informations centralisé&nbsp;: nous concevons et construisons vos outils d'IA, en direct avec vos équipes.</p>
+        <div class="ctas">
+          <a class="btn btn-white" href="#rdv">Réserver un appel</a>
+          <a class="btn btn-ghost" href="#cas">Exemples de cas d'usage ↓</a>
+        </div>
+        <a class="duo" href="#equipe">
+          <span class="duo-faces"><img src="assets/kevin.webp" alt="Kevin Sananikone" width="44" height="44"><img src="assets/arnaud.webp" alt="Arnaud Weiss" width="44" height="44"></span>
+          <span class="duo-txt"><b>Deux interlocuteurs, technique et métier</b><span>dédiés uniquement à votre projet, sans intermédiaire</span></span>
+        </a>
+        <div class="ab-who"><b>Deux interlocuteurs, technique et métier</b><span>dédiés uniquement à votre projet, sans intermédiaire</span></div>
+        <div class="ab-cards" data-cards></div>
+      </div>
+      <div class="ab-side"><div class="ab-cards" data-cards></div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ LOGOS ============ -->
+<div class="logos">
+  <div class="wrap">
+    <span class="small">Ils nous font confiance</span>
+    <div class="logos-row">
+      <img src="assets/logo-europ-assistance.webp" alt="Europ Assistance">
+      <img src="assets/logo-wojo.webp" alt="Wojo" style="height:18px">
+      <img src="assets/logo-omnes.webp" alt="OMNES Education">
+      <img src="assets/logo-cdc-habitat.webp" alt="CDC Habitat" style="height:30px">
+      <img src="assets/logo-koino.webp" alt="Koïno" style="height:22px">
+      <img src="assets/logo-m6.webp" alt="M6" style="height:30px">
+    </div>
+  </div>
+</div>
+
+<!-- ============ EXEMPLES DE CAS D'USAGE : panneau fixe + textes qui défilent (cas.css, cas.js, cas-demos.html) ============ -->
+<section class="cx" id="cas" data-case="0" aria-label="Exemples de cas d'usage">
+  <div class="cx-bgs" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="cx-in">
+    <div class="cx-head">
+      <span class="kick">Exemples de cas d'usage</span>
+      <h2>Des solutions à la mesure de vos exigences.</h2>
+      <p>Quatre exemples de ce que nous construisons. Chaque outil se conçoit avec vos équipes, selon vos besoins.</p>
+    </div>
+    <div class="cx-grid">
+      <div class="cx-panel">
+        <cas-demos></cas-demos>
+        <button type="button" class="cx-pause" aria-label="Mettre l'animation en pause" aria-pressed="false"><svg class="i-pause" viewBox="0 0 16 16" fill="currentColor"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg><svg class="i-play" viewBox="0 0 16 16" fill="currentColor"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5z"/></svg></button>
+      </div>
+      <div class="cx-list">
+        <article class="cx-item on">
+          <div class="cx-pin">
+          <span class="cx-name">Génération de livrables</span>
+          <h3>Accélérez la production de vos livrables.</h3>
+          <dl class="cx-meta"><div><dt>Documents concernés</dt><dd>IM, one-pagers, pitchs</dd></div><div><dt>Export</dt><dd>PowerPoint, Word, Excel</dd></div></dl>
+          </div>
+        </article>
+        <article class="cx-item">
+          <div class="cx-pin">
+          <span class="cx-name">Relecture documentaire</span>
+          <h3>De la v1 à la vF, en moins de versions.</h3>
+          <dl class="cx-meta"><div><dt>Documents concernés</dt><dd>Pitchs, IM, VDD et tout autre livrable de votre choix</dd></div></dl>
+          </div>
+        </article>
+        <article class="cx-item">
+          <div class="cx-pin">
+          <span class="cx-name">Socle d'informations centralisé</span>
+          <h3>Un savoir qui s'enrichit à chaque dossier.</h3>
+          <dl class="cx-meta"><div><dt>Outils concernés</dt><dd>Outlook, Teams, SharePoint, votre CRM<br>Vos abonnements de données : Moody's, S&amp;P Capital IQ, PitchBook…</dd></div></dl>
+          </div>
+        </article>
+        <article class="cx-item">
+          <div class="cx-pin">
+          <span class="cx-name">Automatisations</span>
+          <h3>Automatisez ce qui revient chaque semaine.</h3>
+          <dl class="cx-meta"><div class="col"><dt>Exemples d'automatisations</dt><dd><ul class="cx-auto"><li>Comptes rendus de rendez-vous, CRM mis à jour</li><li>Note de préparation avant chaque rendez-vous</li><li>Staffing des équipes sur les mandats</li><li>Nouveaux documents de data room résumés pour l'équipe</li></ul></dd></div></dl>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ÉTUDE DE CAS CLIENT (client anonymisé, textes en attente) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4.2" fill="currentColor"/><path d="M3.5 21c.9-4.6 4.3-7 8.5-7s7.6 2.4 8.5 7z" fill="currentColor"/></symbol></svg>
+<section class="sec sec-mist ev" id="etude">
+  <div class="wrap">
+    <div class="va-top">
+      <div class="ev-up">
+        <span class="kick">Étude de cas</span>
+        <h2 class="h2 ev-title">Une boutique de M&amp;A française, leader du segment small et mid cap.</h2>
+      </div>
+      <figure class="ev-quote ev-up d1">
+        <span class="ev-person"><svg><use href="#person"/></svg></span>
+        <div><blockquote>« Nous avons transformé notre manière de travailler. »</blockquote><figcaption>Directeur, boutique de M&amp;A</figcaption></div>
+      </figure>
+    </div>
+    <div class="va-stats">
+      <div class="va-stat ev-up d1"><b data-count="120" data-pre="+" data-suf=" h">+120 h</b><span>économisées par mois</span></div>
+      <div class="va-stat ev-up d2"><b data-count="45" data-pre="+" data-suf=" %">+45 %</b><span>d'amélioration dans la production des documents</span></div>
+      <div class="va-stat ev-up d3"><b data-count="30" data-pre="−" data-suf=" %">−30 %</b><span>de temps de préparation</span></div>
+    </div>
+    <div class="va-built">
+      <h3 class="ev-sub">Ce que nous avons construit pour elle</h3>
+      <ol class="ev-line"><li><b>Fiche société</b></li><li><b>Revue d'IM</b></li><li><b>Revue de VDD et de pitchs</b></li><li><b>Automatisation du CRM</b></li></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ÉQUIPE ============ -->
+<section class="sec" id="equipe">
+  <div class="wrap">
+    <div class="tm-head">
+      <div>
+        <span class="kick">Équipe</span>
+        <h2 class="h2">Une double expertise, produit et technique.</h2>
+      </div>
+    </div>
+    <div class="tm-grid">
+      <article class="tm-card">
+        <div class="tm-ph"><img src="assets/kevin.webp" alt="Kevin Sananikone" width="800" height="800" loading="lazy">
+          <div class="tm-cap"><div><h3>Kevin Sananikone</h3><small>Ingénieur IA, responsable technique</small></div><a class="tm-in" href="#" aria-label="LinkedIn de Kevin Sananikone"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.6 5.6h2.1V13H3.6zM4.65 2.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4zM7.1 5.6h2v1c.3-.6 1-1.2 2.2-1.2 2.3 0 2.7 1.5 2.7 3.5V13h-2.1V9.3c0-.9 0-2-1.2-2s-1.4.9-1.4 1.9V13H7.1z"/></svg></a></div></div>
+        <div class="tx"><div><p class="lead">Conçoit et construit vos outils, jusqu'à leur mise en service.</p><p class="det">Responsable technique, Kevin conçoit l'architecture, développe et met en service chaque outil. Avant Recoupe, il a dirigé en indépendant le développement d'applications pour OMNES Éducation, CDC Biodiversité ou Hublo.</p></div>
+          <div><span class="chips-h">Sur chaque projet</span><div class="chips"><span>Architecture</span><span>Développement</span><span>Mise en service</span><span>Suivi</span></div></div></div>
+      </article>
+      <article class="tm-card">
+        <div class="tm-ph"><img src="assets/arnaud.webp" alt="Arnaud Weiss" width="800" height="800" loading="lazy">
+          <div class="tm-cap"><div><h3>Arnaud Weiss</h3><small>Responsable produit et métier</small></div><a class="tm-in" href="#" aria-label="LinkedIn d'Arnaud Weiss"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.6 5.6h2.1V13H3.6zM4.65 2.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4zM7.1 5.6h2v1c.3-.6 1-1.2 2.2-1.2 2.3 0 2.7 1.5 2.7 3.5V13h-2.1V9.3c0-.9 0-2-1.2-2s-1.4.9-1.4 1.9V13H7.1z"/></svg></a></div></div>
+        <div class="tx"><div><p class="lead">Traduit vos façons de travailler en outils qui les respectent.</p><p class="det">Responsable produit, Arnaud connaît les métiers de la finance et leurs outils de l'intérieur : diplômé du programme Grande École de l'ESCP, il est passé par les équipes M&amp;A et ECM de Santander et de CACIB. Il rédige les fiches métier, cadre chaque projet avec vos équipes et en mène la recette.</p></div>
+          <div><span class="chips-h">Sur chaque projet</span><div class="chips"><span>Cadrage</span><span>Fiches métier</span><span>Recette</span><span>Suivi</span></div></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SÉCURITÉ ============ -->
+<section class="sec secu" id="securite">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kick">Sécurité et confidentialité</span>
+      <h2 class="h2">Vos dossiers restent les vôtres.</h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+        <b>Conforme au RGPD</b><p>Données hébergées dans l'Union européenne. Un accord de traitement des données encadre chaque projet.</p>
+      </div>
+      <div class="pillar">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <b>Aucun entraînement sur vos données</b><p>Vos documents, vos questions et les réponses ne servent jamais à entraîner un modèle, ni le nôtre, ni celui de nos fournisseurs.</p>
+      </div>
+      <div class="pillar">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M3 12h18"/></svg>
+        <b>Un espace isolé par cabinet</b><p>Vos données sont chiffrées et cloisonnées, séparées de celles des autres clients. Seules vos équipes y ont accès.</p>
+      </div>
+      <div class="pillar">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg>
+        <b>Installation chez vous</b><p>Si votre politique l'exige, l'outil tourne sur votre propre infrastructure ou votre cloud.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUESTIONS FRÉQUENTES ============ -->
+<section class="sec sec-mist" id="faq">
+  <div class="wrap faq">
+    <div class="sec-head" style="margin:0">
+      <span class="kick">Questions fréquentes</span>
+      <h2 class="h2">Les questions que vous vous posez sûrement.</h2>
+    </div>
+    <div class="qa">
+      <details open><summary>Quelle est la différence entre vos outils et un simple Claude Cowork ?</summary><p>Claude Cowork est un assistant généraliste : chacun l'utilise à sa façon, sans qu'il connaisse vos modèles ni vos dossiers. Nous construisons des outils pensés pour une tâche précise de votre cabinet. Ils partent de vos modèles Excel et PowerPoint, se connectent à vos sources, suivent vos étapes de travail et citent le document d'origine de chaque information. Votre équipe n'a pas de requêtes à écrire.</p></details>
+      <details><summary>Quelle IA utilisez-vous ?</summary><p>Nous choisissons le modèle le plus adapté à chaque tâche parmi les meilleurs du marché, dans le respect de vos contraintes de confidentialité. Nos outils ne dépendent pas d'un seul fournisseur : nous pouvons changer de modèle sans refaire l'outil.</p></details>
+      <details><summary>À quelles sources l'outil se connecte-t-il ?</summary><p>À vos outils internes (messagerie, Teams, serveur de fichiers, CRM, archives de mandats) et aux bases auxquelles vous êtes abonnés, par exemple Mergermarket, S&amp;P Capital IQ, PitchBook ou Pappers. Pour chaque base, nous vérifions d'abord ce que votre abonnement permet.</p></details>
+      <details><summary>Nos données sont-elles en sécurité ? Quelles normes de conformité respectez-vous ?</summary><p>Vos données sont traitées dans l'Union européenne, dans le respect du RGPD, et ne servent jamais à entraîner un modèle. Si votre politique l'exige, l'outil peut être installé sur votre propre infrastructure. Nous répondons à votre questionnaire de sécurité fournisseur.</p></details>
+      <details><summary>Combien de temps avant d'avoir un premier outil ?</summary><p>Nous partons d'un de vos dossiers. Un premier prototype est testé par votre équipe sur un cas réel avant tout déploiement. Le délai est fixé dès le premier échange, selon l'outil et les sources à connecter.</p></details>
+      <details><summary>Combien ça coûte ?</summary><p>Le prix dépend de l'outil, des sources à connecter et du nombre d'utilisateurs. Il est fixé après le premier échange, une fois le besoin compris : vous connaissez le montant avant de commencer.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOC FINAL ============ -->
+</main>
+
+<!-- ============ FIN DE PAGE : appel à l'action et pied de page sur un même fond dégradé ============ -->
+<div class="outro">
+  <section class="final" id="rdv">
+    <div class="wrap">
+      <span class="kick">Parlons de votre prochain projet</span>
+      <h2 class="h2">Voyons ce que l'IA fait sur un de vos dossiers.</h2>
+      <p class="lead">Un premier appel gratuit de 30 minutes.</p>
+      <div class="ctas"><a class="btn btn-white" href="#">Réserver un appel</a></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <a class="brand" href="#haut" aria-label="Recoupe, haut de page">
+        <svg width="34" height="27" viewBox="0 0 76 60" aria-hidden="true">
+          <circle class="ring" cx="28" cy="30" r="18" fill="none" stroke-width="2.6"/>
+          <circle class="ring" cx="48" cy="30" r="18" fill="none" stroke-width="2.6"/>
+          <circle cx="48" cy="30" r="18" fill="url(#mk-g)" clip-path="url(#mk-c)"/>
+        </svg>
+        recoupe
+      </a>
+      <a class="x" href="#">Recoupe fait aussi de l'IA sur mesure pour tous les métiers →</a>
+      <nav aria-label="Liens légaux"><a href="#">LinkedIn</a><a href="#">Mentions légales</a></nav>
+    </div>
+  </footer>
+
+  <div class="outro-word" aria-hidden="true">recoupe</div>
+</div>
+
+<script src="ab.js?v=1"></script>
+<script src="script.js?v=17"></script>
+<script src="cas.js?v=20"></script>
+</body>
+</html>
