@@ -48,19 +48,18 @@ const ioEv = new IntersectionObserver((entries) => {
 document.querySelectorAll('.ev').forEach(s => ioEv.observe(s));
 }
 
-// 4. Apparition au défilement (Confidentialité, FAQ, fin de page), en décalé dans chaque groupe
+// 4. Apparition au défilement (Confidentialité, FAQ, fin de page).
+// Le décalage ne joue qu'entre les éléments qui arrivent à l'écran en même temps ; la FAQ apparaît d'un bloc.
 {
-  const groups = [
-    '#securite .sec-head > *', '#securite .pillar',
-    '#faq .sec-head > *', '#faq .qa details',
-    '.outro .final .wrap > *', '.outro .footer .wrap > *', '.outro-word',
-  ];
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const groups = ['#securite .sec-head > *', '#securite .pillar', '#faq .sec-head > *', '#faq .qa', '.outro .final .wrap > *'];
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('rv-in'); io.unobserve(e.target); } });
-    }, { threshold: .15, rootMargin: '0px 0px -8% 0px' });
-    groups.forEach(sel => document.querySelectorAll(sel).forEach((el, i) => {
-      el.classList.add('rv'); el.style.setProperty('--i', i); io.observe(el);
-    }));
+      let n = 0;
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.style.setProperty('--i', Math.min(n++, 3)); e.target.classList.add('rv-in'); io.unobserve(e.target);
+      });
+    }, { threshold: .08, rootMargin: '0px 0px -4% 0px' });
+    groups.forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('rv'); io.observe(el); }));
   }
 }

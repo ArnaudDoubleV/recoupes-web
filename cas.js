@@ -4,6 +4,8 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let ROOT=document;const $ = (s,r=ROOT)=>r.querySelector(s), $$=(s,r=ROOT)=>[...r.querySelectorAll(s)];
 let token = 0, cur = 0, visible = false;
 let PAUSED = false;
+// téléphone : chaque démo indique elle-même la zone à montrer, au bon moment du scénario
+let PHONE = false, ZONE = () => {};
 // attente annulable (changement de cas) et suspendue tant que la pause est active
 const sleep = (ms,tk)=>new Promise((res,rej)=>{const go=()=>{if(tk!==token)return rej("stop");if(PAUSED)return setTimeout(go,120);res()};setTimeout(go,reduce?0:ms)});
 
@@ -34,7 +36,8 @@ async function demo1(d,tk){
  lns.forEach(l=>l.classList.remove("in"));pops.forEach(p=>p.classList.remove("in"));
  $("#d1-tip").classList.remove("in");$("#d1-toast").classList.remove("in");$("#d1-status").className="pill n";$("#d1-status").textContent="Brouillon";
  cur$(d).classList.remove("show");
- const c0=local(hp,cam);setCam(cam,1.3,c0.x+c0.w/2,c0.y+c0.h/2+10,0);
+ if(PHONE)setCam(cam,1,430,280,0);else{const c0=local(hp,cam);setCam(cam,1.3,c0.x+c0.w/2,c0.y+c0.h/2+10,0)}
+ ZONE(0);
  await sleep(700,tk);
  // 1. on tape la demande dans le grand champ
  await moveTo(d,htxt,tk,.2,.5);
@@ -43,12 +46,12 @@ async function demo1(d,tk){
  htxt.querySelector(".caret")?.remove();
  await moveTo(d,hsend,tk);await click(d,hsend,tk);cur$(d).classList.remove("show");
  // 2. le champ rejoint sa place, la caméra recule, l'interface apparaît
- $("#d1-txt").textContent=ask;
+ $("#d1-txt").textContent=ask;ZONE(1);
  const a=local(hp,cam),b=local(lp,cam);
  hp.style.transition="transform 1.1s cubic-bezier(.65,0,.25,1), opacity .35s .85s";
  hero.classList.add("leave");
  requestAnimationFrame(()=>{hp.style.transform=`translate(${b.x-a.x}px,${b.y-a.y}px) scale(${b.w/a.w})`;hp.style.opacity="0"});
- setCam(cam,1,430,280,1100);
+ if(!PHONE)setCam(cam,1,430,280,1100);
  await sleep(850,tk);lp.classList.add("in");await sleep(300,tk);hero.style.display="none";
  $("#d1-status").className="pill a";$("#d1-status").innerHTML='<span class="spin" style="width:9px;height:9px"></span>Préparation en cours';
  // 3. la préparation se charge
@@ -59,7 +62,7 @@ async function demo1(d,tk){
  await run(1,620);pops.forEach((p,i)=>setTimeout(()=>{if(tk!==token)return;p.classList.add("in");countUp(p.querySelector("[data-v]"),tk)},i*110));
  await run(2,480);await run(3,520);
  // 4. rédaction : la caméra suit le document qui s'écrit ligne par ligne
- const s4=steps[4];s4.classList.add("run");s4.firstElementChild.outerHTML='<span class="spin"></span>';
+ ZONE(2);const s4=steps[4];s4.classList.add("run");s4.firstElementChild.outerHTML='<span class="spin"></span>';
  const rest=lns.slice(3);
  for(let i=0;i<rest.length;i++){rest[i].classList.add("in");await sleep(rest[i].tagName==="H5"?260:170,tk)}
  await sleep(400,tk);s4.classList.remove("run");s4.classList.add("done");s4.firstElementChild.outerHTML=CHECK;
@@ -72,7 +75,7 @@ async function demo1(d,tk){
  await sleep(300,tk);
  const src=$$(".kpi .src",d)[0];await moveTo(d,src,tk);$("#d1-tip").classList.add("in");await sleep(2200,tk);$("#d1-tip").classList.remove("in");
  await moveTo(d,$("#d1-export"),tk);await click(d,$("#d1-export"),tk);
- $("#d1-toast").classList.add("in");cur$(d).classList.remove("show");
+ $("#d1-toast").classList.add("in");ZONE(3);cur$(d).classList.remove("show");
  await sleep(3000,tk);
 }
 
@@ -84,6 +87,7 @@ async function demo2(d,tk){
  $("#d2-w").textContent="porté";$("#d2-w").className="hl";const fb=$("#d2-fix");fb.className="b sun";fb.innerHTML="Corriger en un clic";cards.forEach(c=>c.classList.remove("solved","gone"));cnt.textContent="0";$("#d2-prog").style.opacity=1;$("#d2-pbi").style.width="0";$("#d2-toast").classList.remove("in");
  $("#d2-status").className="pill a";$("#d2-status").innerHTML='<span class="spin" style="width:9px;height:9px"></span>Analyse en cours';
  $$("#d2-th i",d).forEach(i=>i.classList.remove("f","fa"));cur$(d).classList.remove("show");
+ ZONE(0);
  const passes=["Chiffres","Cohérence","Rédaction","Charte","Sources","Synthèse"];
  const slide=$("#d2-slide");
  const mark=(el,n,a)=>{const r=el.getBoundingClientRect(),rs=slide.getBoundingClientRect(),s=rs.width/500;const m=document.createElement("span");m.className="mk"+(a?" a":"");m.textContent=n;
@@ -101,7 +105,7 @@ async function demo2(d,tk){
  }
  $("#d2-prog").style.opacity=0;$("#d2-status").className="pill g";$("#d2-status").textContent="✓ Analyse terminée · 11 min";
  // réordonner : carte 1 en tête déjà ; sélection
- await sleep(500,tk);cards[0].classList.add("sel");
+ ZONE(1);await sleep(PHONE?1500:500,tk);cards[0].classList.add("sel");
  const btn=$("#d2-fix");await moveTo(d,btn,tk);btn.classList.add("hov");await sleep(350,tk);
  await click(d,btn,tk);btn.classList.remove("hov");btn.classList.add("shine");
  // gerbe d'étincelles depuis le bouton
@@ -121,7 +125,7 @@ async function demo2(d,tk){
  cards[0].classList.add("solved");
  cnt.classList.remove("tick");void cnt.offsetWidth;cnt.classList.add("tick");bump(total-1);
  await sleep(650,tk);
- $("#d2-toast").classList.add("in");cur$(d).classList.remove("show");
+ $("#d2-toast").classList.add("in");ZONE(2);cur$(d).classList.remove("show");
  await sleep(500,tk);cards[0].classList.add("gone");
  await sleep(3000,tk);
 }
@@ -154,10 +158,11 @@ async function demo3(d,tk){
  buildCanvas(d);
  const msgs=$("#d3-msgs"),ask=$("#d3-ask");msgs.innerHTML="";ask.textContent="Posez une question à la mémoire du cabinet…";ask.style.color="";
  $$(".node",d).forEach(n=>n.classList.remove("hot"));$$(".flow",d).forEach(f=>f.classList.remove("go"));$$(".wire",d).forEach(w=>w.classList.remove("live"));
+ ZONE(0);
  let n=212468;const nEl=$("#d3-n");const it=setInterval(()=>{if(tk!==token)return clearInterval(it);n+=Math.floor(Math.random()*9)+1;nEl.textContent=n.toLocaleString("fr-FR")},260);
  // flux d'indexation : toutes les sources
  for(const s of [...SOURCES,{id:"db"}]){$("#f-"+s.id).classList.add("go");await sleep(120,tk)}
- await sleep(900,tk);
+ await sleep(PHONE?2600:900,tk);ZONE(1);
  ask.style.color="var(--ink)";
  await type(ask,"Quels acquéreurs avons-nous déjà approchés dans la distribution d'équipements CHR ?",tk,24);
  await sleep(300,tk);
@@ -188,9 +193,10 @@ async function demo4(d,tk){
  $("#d4-b").textContent="Premier rendez-vous";$("#d4-b").classList.remove("new");$("#d4-ok").classList.remove("in");$("#d4-toast").classList.remove("in");
  lks.forEach(l=>l.classList.remove("on","ok"));f1.classList.remove("live");$("#d4-l1").textContent="il y a 3 h";$("#d4-crm-s").textContent="À jour";$("#d4-sp").style.visibility="";
  cur$(d).classList.remove("show");
- await sleep(400,tk);
+ ZONE(0);await sleep(400,tk);
  f1.classList.add("live");$("#d4-l1").textContent="en cours";
  lks[0].classList.add("on");
+ if(PHONE){await sleep(2700,tk);ZONE(1);await sleep(500,tk)}
  for(let i=0;i<bars.length;i++){bars[i].classList.add("p");await sleep(28,tk)}
  lks[0].classList.replace("on","ok");lks[1].classList.add("on");
  const text="Rendez-vous avec <span class='ent'>Claire Morel</span>, DG d'<span class='ent'>Atlas Équipements</span>. Elle valide le principe d'un mandat de cession. Lettre de mission à envoyer d'ici <span class='ent'>vendredi</span>, relance le 21/11.";
@@ -207,7 +213,7 @@ async function demo4(d,tk){
  $("#d4-ok").classList.add("in");await sleep(500,tk);
  const v=$("#d4-val");await moveTo(d,v,tk);await click(d,v,tk);
  lks[3].classList.replace("on","ok");$("#d4-crm-s").textContent="À jour";$("#d4-sp").style.visibility="hidden";$("#d4-l1").textContent="à l'instant";
- $("#d4-toast").classList.add("in");cur$(d).classList.remove("show");
+ $("#d4-toast").classList.add("in");ZONE(2);cur$(d).classList.remove("show");
  await sleep(3200,tk);
 }
 
@@ -256,7 +262,7 @@ async function demo4(d,tk){
     const sr = scaler.getBoundingClientRect(), k = sr.width / 860;
     let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     const parts = [...el.children].filter(c => { const r = c.getBoundingClientRect(); return r.width > 2 && r.height > 2 && getComputedStyle(c).position !== 'absolute'; });
-    (parts.length ? parts : [el]).forEach(c => { const r = c.getBoundingClientRect(); x0 = Math.min(x0, r.left); y0 = Math.min(y0, r.top); x1 = Math.max(x1, r.right); y1 = Math.max(y1, r.bottom); });
+    (parts.length && !el.classList.contains('toast') ? parts : [el]).forEach(c => { const r = c.getBoundingClientRect(); x0 = Math.min(x0, r.left); y0 = Math.min(y0, r.top); x1 = Math.max(x1, r.right); y1 = Math.max(y1, r.bottom); });
     const pr = el.getBoundingClientRect(); // ne jamais sortir de la zone elle-même
     x0 = Math.max(x0, pr.left); y0 = Math.max(y0, pr.top); x1 = Math.min(x1, pr.right); y1 = Math.min(y1, pr.bottom);
     return { x: (x0 - sr.left) / k, y: (y0 - sr.top) / k, w: (x1 - x0) / k, h: (y1 - y0) / k };
@@ -286,42 +292,24 @@ async function demo4(d,tk){
     const changed = fi !== j || instant;
     if (changed) { fi = j; lastSwitch = performance.now(); }
     const b = box(el); if (b.w < 20 || b.h < 20) return;
-    const pad = 10, sc = Math.min(W / (b.w + 2 * pad), H / (b.h + 2 * pad), 1.25);
-    const tx = W / 2 - (b.x + b.w / 2) * sc, ty = H / 2 - (b.y + b.h / 2) * sc;
+    const pad = 10, sc = Math.max(H / 560, W / 860, Math.min(W / (b.w + 2 * pad), H / (b.h + 2 * pad), 1.25));
+    // le cadre ne sort jamais de la fenêtre de l'outil (pas de vide autour)
+    const tx = Math.min(0, Math.max(W - 860 * sc, W / 2 - (b.x + b.w / 2) * sc)), ty = Math.min(0, Math.max(H - 560 * sc, H / 2 - (b.y + b.h / 2) * sc));
     // zone morte : on ignore les micro-variations dues aux éléments qui s'animent dans la zone
     if (changed || Math.abs(tx - T.x) > 6 || Math.abs(ty - T.y) > 6 || Math.abs(sc - T.s) > .02) { T.x = tx; T.y = ty; T.s = sc; }
     if (instant || reduce) { C.x = T.x; C.y = T.y; C.s = T.s; V.x = V.y = V.s = 0; paint(); }
     else camGo();
     if (cap && (changed || !cap.querySelector('span').textContent)) { cap.querySelector('b').textContent = j + 1; cap.querySelector('span').textContent = FRAMES[i][j][1]; cap.classList.remove('flash'); void cap.offsetWidth; cap.classList.add('flash'); }
   };
-  const firstFrame = (i, soft) => { const els = frameEls(i); const j = Math.max(0, els.findIndex(shown)); fi = -1; frame(i, j, !soft); };
-  // l'action (curseur, élément qui s'anime) désigne la zone à montrer ; on reste au moins 1,4 s sur une zone
-  const follow = (el, pt) => {
-    if (!phone || active < 0) return;
-    const els = frameEls(active); let j = -1;
-    if (pt) { const sr = scaler.getBoundingClientRect(), k = sr.width / 860; j = els.findIndex(e => { if (!shown(e)) return false; const r = e.getBoundingClientRect(); const x = sr.left + pt[0] * k, y = sr.top + pt[1] * k; return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; }); }
-    else j = els.findIndex(e => e && e.contains(el) && shown(e));
-    const t = els.findIndex(e => e && e.classList.contains('toast') && e.classList.contains('in'));
-    if (t >= 0) j = t;
-    if (j <= fi || performance.now() - lastSwitch < 2600) return; // on avance toujours : jamais de retour à une zone déjà montrée
-    frame(active, j);
-  };
-  new MutationObserver(ms => {
-    if (!phone) return;
-    for (const m of ms) {
-      const t = m.target.nodeType === 1 ? m.target : m.target.parentElement; if (!t || !demos[active]?.contains(t)) continue;
-      if (t.classList.contains('cursor')) { if (t.classList.contains('show')) { const g = /translate\(([-\d.]+)px,\s*([-\d.]+)px/.exec(t.style.transform); if (g) follow(null, [+g[1], +g[2]]); } }
-      else follow(t);
-    }
-  }).observe(sr, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'style'] });
+  ZONE = j => { if (!phone || active < 0) return; const first = !painted; painted = true; frame(active, j, first); };
   // le cadre se réajuste pendant que la démo bouge (caméra interne, panneaux qui apparaissent)
-  setInterval(() => { if (phone && inView && active >= 0 && !PAUSED) { if (fi < 0) firstFrame(active, true); else frame(active, fi); } }, 250);
+  setInterval(() => { if (phone && inView && active >= 0 && !PAUSED && fi >= 0) frame(active, fi); }, 250);
   const fit = () => {
     const w = host.clientWidth; W = w;
-    phone = mobile.matches && w < 640;
+    phone = PHONE = mobile.matches && w < 640 && innerHeight > innerWidth; // téléphone tenu à l'horizontale : l'outil reste affiché en entier
     sec.classList.toggle('cx-phone', phone);
     scaler.style.transition = 'none'; scaler.style.willChange = phone ? 'transform' : '';
-    if (phone) { H = Math.round(Math.min(w * 1.02, innerHeight * .6)); lastKey = ''; host.style.height = H + 'px'; if (active >= 0) firstFrame(active); }
+    if (phone) { H = Math.round(Math.min(w * 1.02, innerHeight * .6)); lastKey = ''; host.style.height = H + 'px'; if (active >= 0) frame(active, Math.max(0, fi), true); }
     else { scaler.style.transform = `scale(${w / 860})`; H = w * 560 / 860; host.style.height = H + 'px'; }
     sec.style.setProperty('--ph', panel.offsetHeight + 'px');
   };
@@ -329,10 +317,14 @@ async function demo4(d,tk){
 
   async function play(i) {
     const tk = ++token; if (PAUSED) setPause(false);
+    // téléphone : le changement de cas se fait sous un fondu court, la caméra se replace sans balayage visible
+    if (phone && painted && inView && !reduce && sec.dataset.case != i) { host.classList.add('cx-swap'); await new Promise(r => setTimeout(r, 200)); if (tk !== token) return; painted = false; setTimeout(() => host.classList.remove('cx-swap'), 60); }
+    else host.classList.remove('cx-swap');
+    fi = -1;
     demos.forEach((d, j) => d.classList.toggle('on', j === i));
     tints.forEach((t, j) => t.classList.toggle('on', j === i));
     sec.dataset.case = i;
-    fi = -1; if (phone) requestAnimationFrame(() => firstFrame(i, painted)); painted = true;
+    if (phone && !inView) frame(i, 0, true);
     items.forEach((it, j) => { it.classList.toggle('on', j === i); it.classList.toggle('past', j < i); });
     tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i); t.tabIndex = j === i ? 0 : -1; });
     if (mobile.matches && tabs[i]) { const row = tabs[i].parentElement; row.scrollTo({ left: tabs[i].offsetLeft - (row.clientWidth - tabs[i].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' }); }

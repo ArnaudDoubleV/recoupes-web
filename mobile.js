@@ -37,7 +37,7 @@
   const tabs = [...row.querySelectorAll('.cx-tab')];
   const pill = document.createElement('span'); pill.className = 'cx-pill'; pill.setAttribute('aria-hidden', 'true');
   const gauge = document.createElement('i'); pill.append(gauge); row.prepend(pill); row.classList.add('has-pill');
-  const D = [23, 11.8, 13.6, 11.5];              // durée d'une démo en secondes, affinée ensuite d'après le temps réel
+  const D = [23.2, 13, 15.5, 14.7];              // durée d'une démo en secondes, affinée ensuite d'après le temps réel
   let cur = -1, t0 = 0, lastTouch = 0;
   const place = () => {
     const i = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true'); if (i < 0) return;
