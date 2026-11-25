@@ -249,15 +249,32 @@
 }
 /* Écrans tactiles : zone de toucher du lien LinkedIn portée à 44 px sans changer le visuel */
 @media (pointer: coarse) { .tm-in { position: relative; } .tm-in::before { content: ""; position: absolute; inset: -6px; } }
-/* Indication « tournez votre téléphone » : téléphone tenu à la verticale uniquement */
-.cx-rotate { display: none; }
-@media (max-width: 639px) and (orientation: portrait) {
-  .cx-rotate { grid-area: meta; align-self: start; display: flex; align-items: center; gap: 8px; margin: 14px 0 0; padding-right: 56px; font-size: 13px; line-height: 1.4; color: var(--grey); }
-  .cx-rotate svg { flex: none; width: 18px; height: 18px; }
-  .cx-item .cx-meta { margin-top: 64px; }
-}
+/* Téléphone à la verticale : cadre vertical sur une zone de l'outil à la fois + légende de l'étape en cours */
+.cx-cap { display: none; }
+#cas.cx-phone .cx-panel cas-demos { overflow: hidden; border-radius: 16px; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 18px 40px -22px rgba(40,18,8,.35); filter: none; }
+#cas.cx-phone .cx-cap { grid-area: meta; align-self: start; display: flex; align-items: flex-start; gap: 10px; min-height: 66px; margin: 16px 0 0; padding-right: 52px; font-size: 15px; line-height: 1.45; color: var(--ink); }
+#cas.cx-phone .cx-cap b { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: #fff; font: 600 12px/22px Inter, sans-serif; text-align: center; }
+#cas.cx-phone .cx-cap.flash span, #cas.cx-phone .cx-cap.flash b { animation: capin .5s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes capin { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+#cas.cx-phone .cx-item .cx-meta { margin-top: 96px; }
+@media (prefers-reduced-motion: reduce) { #cas.cx-phone .cx-cap.flash span, #cas.cx-phone .cx-cap.flash b { animation: none; } }
 /* Téléphone tenu à l'horizontale : l'animation entière tient dans la hauteur de l'écran */
 @media (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) {
   .cx-panel { width: min(100%, calc((100svh - 12px) * 860 / 560)); justify-self: center; padding: 0; border-radius: 14px; }
   .cx-panel cas-demos { border-radius: 14px; overflow: hidden; }
 }
+
+/* ---------- onglets : pastille qui glisse d'un cas à l'autre, jauge de la démo en cours ---------- */
+.cx-pill { display: none; }
+@media (max-width: 900px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) {
+  .cx-tabs.has-pill { position: relative; }
+  .cx-tabs.has-pill .cx-pill { display: block; position: absolute; left: 0; top: 2px; height: 44px; border-radius: 999px; background: var(--ink); overflow: hidden; pointer-events: none;
+    transition: transform .5s cubic-bezier(.3,1.2,.4,1), width .5s cubic-bezier(.2,.7,.2,1); will-change: transform; }
+  .cx-pill i { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--sun-2), var(--sun-3)); transform: scaleX(0); transform-origin: 0 50%; }
+  .cx-tabs.has-pill .cx-tab { position: relative; z-index: 1; transition: color .3s, transform .15s; }
+  .cx-tabs.has-pill .cx-tab[aria-selected="true"] { background: transparent; box-shadow: none; }
+  .cx-tab:active { transform: scale(.96); }
+  .cx-panel { touch-action: pan-y; }
+}
+@keyframes cxgauge { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .cx-tabs.has-pill .cx-pill { transition: none; } }

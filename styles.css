@@ -595,3 +595,54 @@ html, body { background: var(--night); }
   .hero .logos .wrap { align-items: center; text-align: center; padding-block: 18px 26px; }
   .hero .logos-row { justify-content: space-between; }
 }
+/* Téléphone et tablette : le haut de la photo se fond dans la couleur de la barre du navigateur (raccord sans démarcation) */
+@media (max-width: 860px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) {
+  .hero::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 150px; z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg, var(--night) 0%, rgba(23,18,15,.82) 22%, rgba(23,18,15,.45) 55%, rgba(23,18,15,0) 100%); }
+}
+
+/* ===================== Finitions tactiles (25/11) ===================== */
+/* trait de progression de lecture, dans le bas de la barre du haut */
+.nav-in { position: relative; }
+.nav-prog { position: absolute; left: 26px; right: 26px; bottom: 0; height: 2px; border-radius: 2px; pointer-events: none;
+  background: linear-gradient(90deg, var(--sun-2), var(--sun-4)); transform: scaleX(0); transform-origin: 0 50%; opacity: 0; transition: opacity .4s; }
+.nav.is-solid .nav-prog { opacity: 1; }
+/* la barre se resserre une fois le haut de page passé */
+@media (max-width: 860px) {
+  .nav-in { transition: background .3s, box-shadow .3s, height .35s cubic-bezier(.2,.7,.2,1), padding .35s cubic-bezier(.2,.7,.2,1); }
+  .nav.is-solid .nav-in { height: 54px; padding-right: 5px; }
+  .nav .btn { transition: transform .15s, background .2s, box-shadow .2s, height .35s cubic-bezier(.2,.7,.2,1); }
+  .nav.is-solid .btn { height: 44px; }
+  .hero-par, .hero-copy { will-change: transform; }
+}
+/* retour au toucher : léger enfoncement, sans attendre */
+.btn, .cx-tab, .tm-in, .duo, .qa summary { -webkit-tap-highlight-color: transparent; }
+.btn:active { transform: scale(.97); transition-duration: .08s; }
+.duo:active .duo-faces { transform: scale(.96); }
+.qa summary { transition: opacity .15s; }
+.qa summary:active { opacity: .55; }
+.qa summary::after { transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+.qa details[open] summary::after { transform: rotate(180deg); }
+/* la réponse d'une question se déplie en douceur */
+.qa details[open] p { animation: qa-in .45s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes qa-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .qa details[open] p { animation: none; } .btn:active { transform: none; } }
+/* « Ce que nous avons construit pour elle » : la frise reste une frise sur petit écran (25/11) */
+/* tablette : frise horizontale conservée, sur 4 colonnes */
+@media (min-width: 561px) and (max-width: 860px) {
+  .ev-line { grid-template-columns: repeat(4, 1fr); row-gap: 0; gap: 16px; }
+  .ev-line::before { display: block; }
+  .ev-line b { font-size: 17px; }
+}
+/* téléphone : frise verticale, trait à gauche qui relie les quatre étapes */
+@media (max-width: 560px) {
+  .ev-line { grid-template-columns: 1fr; gap: 0; row-gap: 0; margin-top: 22px; }
+  .ev-line::before { display: block; left: 7px; right: auto; top: 12px; bottom: 10px; width: 2px; height: auto;
+    background: linear-gradient(180deg, var(--sun-1), var(--sun-3)); transform-origin: 50% 0; transform: scaleY(0); }
+  .is-in .ev-line::before { transform: scaleY(1); }
+  .ev-line li { padding: 0 0 26px 36px; transform: translateX(-8px); }
+  .ev-line li:last-child { padding-bottom: 0; }
+  .ev-line li::before { top: 3px; }
+  .is-in .ev-line li { transform: none; }
+  .ev-line b { font-size: 18px; line-height: 1.25; }
+}

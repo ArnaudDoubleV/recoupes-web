@@ -231,15 +231,108 @@ async function demo4(d,tk){
   // Téléphone et tablette (≤ 900 px) : onglets ; la fenêtre reste entière, mise à l'échelle sur la largeur
   const mobile = matchMedia('(max-width: 900px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px)');
   const tabs = [...sec.querySelectorAll('.cx-tab')];
-  const fit = () => { const w = host.clientWidth; scaler.style.transform = `scale(${w / 860})`; host.style.height = (w * 560 / 860) + 'px'; sec.style.setProperty('--ph', panel.offsetHeight + 'px'); };
+  let active = -1, inView = false;
+  // Téléphone tenu à la verticale : cadre vertical qui montre une seule zone de l'outil à la fois, en grand,
+  // et passe d'une zone à l'autre en suivant l'action ; une légende explique l'étape en cours.
+  const FRAMES = [
+    [['#d1-hero .asst-in', "Vous demandez le livrable en une phrase."],
+     ['.d1-left', "L'outil rassemble les sources : registres, comptes, presse, catalogue."],
+     ['.op-wrap', "Le one-pager se rédige à votre charte, chaque chiffre renvoie à sa source."],
+     ['#d1-toast', "Il s'exporte en PowerPoint, à votre charte."]],
+    [['.d2-view', "L'outil relit chaque slide : chiffres, cohérence, rédaction."],
+     ['.d2-side', "Chaque remarque arrive avec sa correction, à valider en un clic."],
+     ['#d2-toast', "La correction est appliquée dans le PowerPoint, mise en forme préservée."]],
+    [['.canvas', "Vos outils et vos abonnements alimentent un socle unique."],
+     ['.chat', "Vous posez une question, la réponse cite ses sources."]],
+    [['.flows', "Les automatisations se déclenchent seules : rendez-vous, data room, veille."],
+     ['.runp', "Le compte rendu est rédigé et le CRM mis à jour, prêt à valider."],
+     ['#d4-toast', "Vous validez, la fiche CRM est à jour."]],
+  ];
+  const cap = sec.querySelector('.cx-cap');
+  let phone = false, W = 860, H = 560, fi = -1, lastSwitch = 0;
+  const frameEls = i => FRAMES[i].map(([sel]) => demos[i].querySelector(sel));
+  const shown = el => { if (!el) return false; if (el.classList.contains('toast') && !el.classList.contains('in')) return false; const r = el.getBoundingClientRect(); return r.width > 2 && r.height > 2 && getComputedStyle(el).visibility !== 'hidden'; };
+  const box = el => { // zone utile : réunion des enfants visibles, en coordonnées de la fenêtre 860 × 560
+    const sr = scaler.getBoundingClientRect(), k = sr.width / 860;
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    const parts = [...el.children].filter(c => { const r = c.getBoundingClientRect(); return r.width > 2 && r.height > 2 && getComputedStyle(c).position !== 'absolute'; });
+    (parts.length ? parts : [el]).forEach(c => { const r = c.getBoundingClientRect(); x0 = Math.min(x0, r.left); y0 = Math.min(y0, r.top); x1 = Math.max(x1, r.right); y1 = Math.max(y1, r.bottom); });
+    const pr = el.getBoundingClientRect(); // ne jamais sortir de la zone elle-même
+    x0 = Math.max(x0, pr.left); y0 = Math.max(y0, pr.top); x1 = Math.min(x1, pr.right); y1 = Math.min(y1, pr.bottom);
+    return { x: (x0 - sr.left) / k, y: (y0 - sr.top) / k, w: (x1 - x0) / k, h: (y1 - y0) / k };
+  };
+  // Caméra : la cible (tx, ty, s) est rejointe par un ressort amorti, image par image.
+  // Pas de transition CSS relancée en cours de route, donc pas d'à-coup quand la cible change pendant le mouvement.
+  let lastKey = '', painted = false;
+  const T = { x: 0, y: 0, s: 1 }, C = { x: 0, y: 0, s: 1 }, V = { x: 0, y: 0, s: 0 };
+  let camRaf = 0, camT = 0;
+  const paint = () => { scaler.style.transform = `translate3d(${C.x.toFixed(2)}px,${C.y.toFixed(2)}px,0) scale(${C.s.toFixed(4)})`; };
+  const camStep = (now) => {
+    camRaf = 0; if (!phone) return;
+    const dt = Math.min(.034, (now - camT) / 1000 || .016); camT = now;
+    const w = 6.2; let moving = false; // pulsation du ressort : arrivée en 0,8 s environ, sans rebond
+    for (const k of ['x', 'y', 's']) {
+      const d = T[k] - C[k];
+      V[k] += (w * w * d - 2 * w * V[k]) * dt; C[k] += V[k] * dt;
+      const eps = k === 's' ? .0004 : .05;
+      if (Math.abs(d) > eps || Math.abs(V[k]) > eps) moving = true; else { C[k] = T[k]; V[k] = 0; }
+    }
+    paint();
+    if (moving) camRaf = requestAnimationFrame(camStep);
+  };
+  const camGo = () => { if (!camRaf) { camT = performance.now(); camRaf = requestAnimationFrame(camStep); } };
+  const frame = (i, j, instant) => {
+    const el = frameEls(i)[j]; if (!el) return;
+    const changed = fi !== j || instant;
+    if (changed) { fi = j; lastSwitch = performance.now(); }
+    const b = box(el); if (b.w < 20 || b.h < 20) return;
+    const pad = 10, sc = Math.min(W / (b.w + 2 * pad), H / (b.h + 2 * pad), 1.25);
+    const tx = W / 2 - (b.x + b.w / 2) * sc, ty = H / 2 - (b.y + b.h / 2) * sc;
+    // zone morte : on ignore les micro-variations dues aux éléments qui s'animent dans la zone
+    if (changed || Math.abs(tx - T.x) > 6 || Math.abs(ty - T.y) > 6 || Math.abs(sc - T.s) > .02) { T.x = tx; T.y = ty; T.s = sc; }
+    if (instant || reduce) { C.x = T.x; C.y = T.y; C.s = T.s; V.x = V.y = V.s = 0; paint(); }
+    else camGo();
+    if (cap && (changed || !cap.querySelector('span').textContent)) { cap.querySelector('b').textContent = j + 1; cap.querySelector('span').textContent = FRAMES[i][j][1]; cap.classList.remove('flash'); void cap.offsetWidth; cap.classList.add('flash'); }
+  };
+  const firstFrame = (i, soft) => { const els = frameEls(i); const j = Math.max(0, els.findIndex(shown)); fi = -1; frame(i, j, !soft); };
+  // l'action (curseur, élément qui s'anime) désigne la zone à montrer ; on reste au moins 1,4 s sur une zone
+  const follow = (el, pt) => {
+    if (!phone || active < 0) return;
+    const els = frameEls(active); let j = -1;
+    if (pt) { const sr = scaler.getBoundingClientRect(), k = sr.width / 860; j = els.findIndex(e => { if (!shown(e)) return false; const r = e.getBoundingClientRect(); const x = sr.left + pt[0] * k, y = sr.top + pt[1] * k; return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; }); }
+    else j = els.findIndex(e => e && e.contains(el) && shown(e));
+    const t = els.findIndex(e => e && e.classList.contains('toast') && e.classList.contains('in'));
+    if (t >= 0) j = t;
+    if (j <= fi || performance.now() - lastSwitch < 2600) return; // on avance toujours : jamais de retour à une zone déjà montrée
+    frame(active, j);
+  };
+  new MutationObserver(ms => {
+    if (!phone) return;
+    for (const m of ms) {
+      const t = m.target.nodeType === 1 ? m.target : m.target.parentElement; if (!t || !demos[active]?.contains(t)) continue;
+      if (t.classList.contains('cursor')) { if (t.classList.contains('show')) { const g = /translate\(([-\d.]+)px,\s*([-\d.]+)px/.exec(t.style.transform); if (g) follow(null, [+g[1], +g[2]]); } }
+      else follow(t);
+    }
+  }).observe(sr, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'style'] });
+  // le cadre se réajuste pendant que la démo bouge (caméra interne, panneaux qui apparaissent)
+  setInterval(() => { if (phone && inView && active >= 0 && !PAUSED) { if (fi < 0) firstFrame(active, true); else frame(active, fi); } }, 250);
+  const fit = () => {
+    const w = host.clientWidth; W = w;
+    phone = mobile.matches && w < 640;
+    sec.classList.toggle('cx-phone', phone);
+    scaler.style.transition = 'none'; scaler.style.willChange = phone ? 'transform' : '';
+    if (phone) { H = Math.round(Math.min(w * 1.02, innerHeight * .6)); lastKey = ''; host.style.height = H + 'px'; if (active >= 0) firstFrame(active); }
+    else { scaler.style.transform = `scale(${w / 860})`; H = w * 560 / 860; host.style.height = H + 'px'; }
+    sec.style.setProperty('--ph', panel.offsetHeight + 'px');
+  };
   new ResizeObserver(fit).observe(panel); fit();
 
-  let active = -1, inView = false;
   async function play(i) {
     const tk = ++token; if (PAUSED) setPause(false);
     demos.forEach((d, j) => d.classList.toggle('on', j === i));
     tints.forEach((t, j) => t.classList.toggle('on', j === i));
     sec.dataset.case = i;
+    fi = -1; if (phone) requestAnimationFrame(() => firstFrame(i, painted)); painted = true;
     items.forEach((it, j) => { it.classList.toggle('on', j === i); it.classList.toggle('past', j < i); });
     tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i); t.tabIndex = j === i ? 0 : -1; });
     if (mobile.matches && tabs[i]) { const row = tabs[i].parentElement; row.scrollTo({ left: tabs[i].offsetLeft - (row.clientWidth - tabs[i].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' }); }
