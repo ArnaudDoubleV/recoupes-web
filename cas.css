@@ -20,7 +20,7 @@
 .cx-bgs::after { content: ""; position: absolute; inset: 0; opacity: .28; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-.cx-in { width: min(1520px, 100% - 64px); margin-inline: auto; }
+.cx-in { width: min(var(--wrap), 100% - 2 * var(--pad)); margin-inline: auto; }
 
 .cx-head { max-width: 820px; margin-bottom: 80px; }
 .cx-eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 15px/1 Inter, sans-serif; color: var(--sun-4); }
@@ -32,7 +32,7 @@
 
 /* panneau fixe, centré verticalement dans l'écran ; même fond pour tous les cas */
 .cx-panel { position: sticky; top: max(90px, calc(50vh - var(--ph, 560px) / 2 + 30px)); border-radius: 28px; overflow: hidden; padding: clamp(20px, 2.2vw, 32px);
-  background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(244,241,238,.85)); box-shadow: 0 0 0 1px rgba(0,0,0,.05), 0 30px 60px -36px rgba(60,30,15,.28); backdrop-filter: blur(6px); }
+  background: linear-gradient(160deg, rgba(255,255,255,.9), rgba(244,241,238,.85)); box-shadow: 0 0 0 1px rgba(0,0,0,.05), 0 30px 60px -36px rgba(60,30,15,.28); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .cx-tint { display: none; }
 .cx-panel cas-demos { display: block; position: relative; filter: drop-shadow(0 22px 34px rgba(40, 18, 8, .16)); }
 
@@ -187,4 +187,76 @@
 .cx-rv .cx-head.in > :nth-child(3) { transition-delay: 180ms; }
 @media (prefers-reduced-motion: reduce) {
   .cx-rv .cx-head > * { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+}
+/* présentations de l'équipe : alignées à gauche, sans coupure de mots (colonnes trop étroites pour un texte justifié) */
+.tm-card .det { text-align: left; hyphens: manual; -webkit-hyphens: manual; }
+/* FAQ : justifiée sur grand écran, alignée à gauche sur téléphone */
+@media (max-width: 720px) { .qa details p { text-align: left; hyphens: manual; -webkit-hyphens: manual; } }
+/* cartes de l'équipe : photo un peu plus étroite et moins haute, texte plus large (25/11) */
+@media (min-width: 1181px) {
+  .tm-grid { gap: clamp(28px, 3vw, 48px); }
+  .tm-card { grid-template-columns: minmax(210px, 250px) 1fr; }
+  .tm-ph { min-height: 380px; }
+}
+@media (min-width: 601px) and (max-width: 1180px) { .tm-ph { min-height: 340px; } }
+/* Téléphone (25/11) : en-tête Équipe sur une colonne */
+@media (max-width: 720px) { .tm-head { grid-template-columns: 1fr; gap: 18px; margin-bottom: 36px; } }
+
+/* ===================== Cas d'usage sur téléphone et tablette (25/11) =====================
+   Onglets en haut, titre du cas, animation en grand, détails en dessous.
+   Les blocs de texte restent dans le HTML ; ils sont replacés dans la grille et superposés. */
+.cx-tabs { display: none; }
+@media (max-width: 900px) {
+  #cas.cx { padding: 80px 0 72px; }
+  .cx-head { margin-bottom: 32px; }
+  .cx-head p { font-size: 16.5px; }
+  .cx-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tabs" "title" "demo" "meta"; gap: 0; }
+  .cx-list, .cx-list .cx-item, .cx-list .cx-item:first-child, .cx-list .cx-item:last-child, .cx-list .cx-pin { display: contents; }
+  .cx-tabs { grid-area: tabs; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    margin: 0 calc(-1 * var(--pad)) 28px; padding: 2px var(--pad); scroll-padding-inline: var(--pad); }
+  .cx-tabs::-webkit-scrollbar { display: none; }
+  .cx-tab { flex: none; min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: rgba(29,29,31,.06); box-shadow: inset 0 0 0 1px rgba(29,29,31,.06);
+    font: 500 14.5px/1 Inter, sans-serif; color: var(--text); cursor: pointer; transition: background .25s, color .25s; -webkit-tap-highlight-color: transparent; }
+  .cx-tab[aria-selected="true"] { background: var(--ink); color: #fff; box-shadow: none; }
+  .cx-tab:focus-visible { outline: 2px solid var(--sun-4); outline-offset: 2px; }
+  .cx-item .cx-name { display: none; }
+  .cx-item h3 { grid-area: title; align-self: end; margin: 0 0 20px; font-size: clamp(26px, 6.4vw, 34px); }
+  .cx-item .cx-meta { grid-area: meta; align-self: start; margin: 22px 0 0; max-width: none; }
+  .cx-item h3, .cx-item .cx-meta { transition: opacity .45s ease, visibility 0s; }
+  .cx-item:not(.on) h3, .cx-item:not(.on) .cx-meta { opacity: 0; visibility: hidden; transition: opacity .2s ease, visibility 0s .2s; }
+  .cx-item:not(.on) .cx-pin > *, .cx-item.past:not(.on) .cx-pin > * { transform: none; filter: none; }
+  .cx-panel { grid-area: demo; position: relative; top: 0; padding: 0; border-radius: 18px; background: #fff; }
+  .cx-panel cas-demos { filter: none; }
+  /* sur un écran tactile, pas de survol : le bouton pause reste visible */
+  .cx-pause { opacity: 1; transform: none; width: 44px; height: 44px; right: 12px; bottom: 12px; }
+  .cx-meta > div { padding: 12px 0; }
+  .cx-auto li { padding: 9px 0; font-size: 14.5px; }
+}
+@media (min-width: 640px) and (max-width: 900px) {
+  .cx-panel { padding: 16px; border-radius: 24px; }
+  .cx-auto { grid-template-columns: 1fr 1fr; }
+  .cx-auto li:nth-child(2) { border-top: 0; }
+}
+/* Téléphone : l'outil s'affiche en entier, presque d'un bord à l'autre de l'écran (25/11) */
+@media (max-width: 639px) {
+  .cx-panel { margin-inline: calc(8px - var(--pad)); border-radius: 14px; background: none; box-shadow: none; }
+  .cx-panel cas-demos { filter: drop-shadow(0 14px 22px rgba(40, 18, 8, .14)); }
+  .cx-panel { overflow: visible; }
+  .cx-panel cas-demos { border-radius: 14px; overflow: hidden; }
+  .cx-pause { width: 36px; height: 36px; right: calc(var(--pad) - 8px); bottom: -50px; }
+  .cx-item .cx-meta { margin-top: 64px; }
+  .cx-pause::before { content: ""; position: absolute; inset: -6px; }
+}
+/* Écrans tactiles : zone de toucher du lien LinkedIn portée à 44 px sans changer le visuel */
+@media (pointer: coarse) { .tm-in { position: relative; } .tm-in::before { content: ""; position: absolute; inset: -6px; } }
+/* Indication « tournez votre téléphone » : téléphone tenu à la verticale uniquement */
+.cx-rotate { display: none; }
+@media (max-width: 639px) and (orientation: portrait) {
+  .cx-rotate { grid-area: meta; align-self: start; display: flex; align-items: center; gap: 8px; margin: 14px 0 0; padding-right: 56px; font-size: 13px; line-height: 1.4; color: var(--grey); }
+  .cx-rotate svg { flex: none; width: 18px; height: 18px; }
+  .cx-item .cx-meta { margin-top: 64px; }
+}
+/* Téléphone tenu à l'horizontale : l'animation entière tient dans la hauteur de l'écran */
+@media (max-width: 960px) and (max-height: 500px) and (orientation: landscape) {
+  .cx-panel { width: min(100%, calc((100svh - 32px) * 860 / 560 + 32px)); justify-self: center; }
 }

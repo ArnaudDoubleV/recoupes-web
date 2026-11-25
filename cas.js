@@ -21,7 +21,7 @@ const CHECK='<span class="chk"><svg viewBox="0 0 12 12" fill="none" stroke="curr
 function local(el,root){let x=0,y=0,e=el;while(e&&e!==root){x+=e.offsetLeft;y+=e.offsetTop;e=e.offsetParent}return{x,y,w:el.offsetWidth,h:el.offsetHeight}}
 function setCam(cam,s,cx,cy,dur){let tx=430-cx*s,ty=280-cy*s;tx=Math.min(0,Math.max(860-860*s,tx));ty=Math.min(0,Math.max(560-560*s,ty));
  cam.style.transition=dur?`transform ${dur}ms cubic-bezier(.65,0,.25,1)`:"none";cam.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;if(!dur)void cam.offsetWidth}
-function countUp(el,tk){const v=+el.dataset.v,dec=+el.dataset.d,t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/900),e=1-Math.pow(1-k,3);
+function countUp(el,tk){const v=+el.dataset.v,dec=+el.dataset.d,t0=performance.now();(function f(t){const k=Math.max(0,Math.min(1,(t-t0)/900)),e=1-Math.pow(1-k,3);
  el.textContent=(v*e).toFixed(dec).replace(".",",");if(k<1&&tk===token)requestAnimationFrame(f)})(t0)}
 async function demo1(d,tk){
  const cam=$("#d1-cam"),hero=$("#d1-hero"),hp=$("#d1-hp"),htxt=$("#d1-htxt"),hsend=$("#d1-hsend"),lp=$("#d1-lp"),prep=$("#d1-prep"),
@@ -88,7 +88,7 @@ async function demo2(d,tk){
  const slide=$("#d2-slide");
  const mark=(el,n,a)=>{const r=el.getBoundingClientRect(),rs=slide.getBoundingClientRect(),s=rs.width/500;const m=document.createElement("span");m.className="mk"+(a?" a":"");m.textContent=n;
    m.style.left=((r.right-rs.left)/s-6)+"px";m.style.top=((r.top-rs.top)/s-9)+"px";slide.appendChild(m);requestAnimationFrame(()=>m.classList.add("in"))};
- let total=0;const bump=(to)=>{const from=total;total=to;const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/700);cnt.textContent=Math.round(from+(to-from)*k);if(k<1&&tk===token)requestAnimationFrame(f)})(t0)};
+ let total=0;const bump=(to)=>{const from=total;total=to;const t0=performance.now();(function f(t){const k=Math.max(0,Math.min(1,(t-t0)/700));cnt.textContent=Math.round(from+(to-from)*k);if(k<1&&tk===token)requestAnimationFrame(f)})(t0)};
  await sleep(400,tk);
  $("#d2-scan").classList.remove("go");void $("#d2-scan").offsetWidth;$("#d2-scan").classList.add("go");
  for(let i=0;i<passes.length;i++){
@@ -228,6 +228,9 @@ async function demo4(d,tk){
   const DEMOS = [demo1, demo2, demo3, demo4];
 
   // la fenêtre (860 × 560) est mise à l'échelle pour tenir entière dans le panneau
+  // Téléphone et tablette (≤ 900 px) : onglets ; la fenêtre reste entière, mise à l'échelle sur la largeur
+  const mobile = matchMedia('(max-width: 900px)');
+  const tabs = [...sec.querySelectorAll('.cx-tab')];
   const fit = () => { const w = host.clientWidth; scaler.style.transform = `scale(${w / 860})`; host.style.height = (w * 560 / 860) + 'px'; sec.style.setProperty('--ph', panel.offsetHeight + 'px'); };
   new ResizeObserver(fit).observe(panel); fit();
 
@@ -238,10 +241,16 @@ async function demo4(d,tk){
     tints.forEach((t, j) => t.classList.toggle('on', j === i));
     sec.dataset.case = i;
     items.forEach((it, j) => { it.classList.toggle('on', j === i); it.classList.toggle('past', j < i); });
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', j === i); t.tabIndex = j === i ? 0 : -1; });
+    if (mobile.matches && tabs[i]) { const row = tabs[i].parentElement; row.scrollTo({ left: tabs[i].offsetLeft - (row.clientWidth - tabs[i].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' }); }
     if (!inView) return;
     try {
       if (reduce) { await DEMOS[i](demos[i], tk); return; }
-      for (;;) { await DEMOS[i](demos[i], tk); await sleep(900, tk); }
+      for (;;) {
+        await DEMOS[i](demos[i], tk); await sleep(900, tk);
+        // sur téléphone et tablette, on passe tout seul au cas suivant
+        if (mobile.matches) { active = (i + 1) % DEMOS.length; play(active); return; }
+      }
     } catch (e) { if (e !== 'stop') console.error(e); }
   }
 
@@ -256,10 +265,15 @@ async function demo4(d,tk){
 
   // le bloc de texte qui croise le milieu de l'écran devient le cas actif
   const io = new IntersectionObserver(entries => {
+    if (mobile.matches) return;
     entries.forEach(en => { if (en.isIntersecting) { const i = items.indexOf(en.target); if (i !== active) { active = i; play(i); } } });
   }, { rootMargin: '-45% 0px -45% 0px' });
   items.forEach(it => io.observe(it));
-  items.forEach((it, i) => it.addEventListener('click', () => it.scrollIntoView({ behavior: 'smooth', block: 'center' })));
+  items.forEach((it, i) => it.addEventListener('click', () => { if (!mobile.matches) it.scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => { if (i !== active) { active = i; play(i); } });
+    t.addEventListener('keydown', e => { const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!k) return; const n = tabs[(i + k + tabs.length) % tabs.length]; n.focus(); n.click(); });
+  });
 
   new IntersectionObserver(([en]) => {
     inView = en.isIntersecting;

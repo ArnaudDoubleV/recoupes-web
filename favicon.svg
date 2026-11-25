@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 0 60 60">
+  <style>.ring{stroke:#1D1D1F}@media (prefers-color-scheme:dark){.ring{stroke:#F5F5F7}}</style>
+  <defs>
+    <clipPath id="mk-c"><circle cx="28" cy="30" r="18"/></clipPath>
+    <linearGradient id="mk-g" x1="0" y1="12" x2="0" y2="48" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F6C9B4"/><stop offset="1" stop-color="#A8341F"/></linearGradient>
+  </defs>
+  <circle class="ring" cx="28" cy="30" r="18" fill="none" stroke-width="2.6"/>
+  <circle class="ring" cx="48" cy="30" r="18" fill="none" stroke-width="2.6"/>
+  <circle cx="48" cy="30" r="18" fill="url(#mk-g)" clip-path="url(#mk-c)"/>
+</svg>

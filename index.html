@@ -3,14 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Recoupe · L'IA sur mesure des boutiques de M&amp;A</title>
+  <title>Recoupe · L'agence IA des boutiques M&amp;A</title>
   <meta name="description" content="Nous concevons et construisons, avec vos équipes, les outils d'IA des boutiques de M&amp;A et des cabinets de transaction services.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20">
+  <link rel="stylesheet" href="styles.css?v=45">
   <link rel="stylesheet" href="ab.css?v=1">
-  <link rel="stylesheet" href="cas.css?v=29">
+  <link rel="stylesheet" href="cas.css?v=45">
 </head>
 <body>
 
@@ -57,7 +60,7 @@
         <p class="lead">Génération d'IM, relecture de VDD, socle d'informations centralisé&nbsp;: nous concevons et construisons vos outils d'IA, en direct avec vos équipes.</p>
         <div class="ctas">
           <a class="btn btn-white" href="https://calendly.com/sananikone-kevin/30min" target="_blank" rel="noopener">Réserver un appel</a>
-          <a class="btn btn-ghost" href="#cas">Exemples de cas d'usage ↓</a>
+          <a class="btn btn-ghost" href="#cas"><span class="lg-only">Exemples de cas d'usage ↓</span><span class="sm-only">Cas d'usage ↓</span></a>
         </div>
         <a class="duo" href="#equipe">
           <span class="duo-faces"><img src="assets/kevin.webp" alt="Kevin Sananikone" width="44" height="44"><img src="assets/arnaud.webp" alt="Arnaud Weiss" width="44" height="44"></span>
@@ -70,22 +73,21 @@
     </div>
 
   </div>
-</section>
-
-<!-- ============ LOGOS ============ -->
-<div class="logos">
-  <div class="wrap">
-    <span class="small">Ils nous font confiance</span>
-    <div class="logos-row">
-      <img src="assets/logo-europ-assistance.webp" alt="Europ Assistance">
-      <img src="assets/logo-wojo.webp" alt="Wojo" style="height:18px">
-      <img src="assets/logo-omnes.webp" alt="OMNES Education">
-      <img src="assets/logo-cdc-habitat.webp" alt="CDC Habitat" style="height:30px">
-      <img src="assets/logo-koino.webp" alt="Koïno" style="height:22px">
-      <img src="assets/logo-m6.webp" alt="M6" style="height:30px">
+  <!-- logos clients, dans le bas du haut de page -->
+  <div class="logos" aria-label="Références">
+    <div class="wrap">
+      <span class="small">Ils nous font confiance</span>
+      <div class="logos-row">
+        <img src="assets/logos-clair/europ-assistance.webp" alt="Europ Assistance" style="height:28px">
+        <img src="assets/logos-clair/wojo.svg" alt="Wojo" style="height:30px">
+        <img src="assets/logos-clair/omnes.svg" alt="OMNES Education" style="height:28px">
+        <img src="assets/logos-clair/cdc-habitat.webp" alt="CDC Habitat" style="height:28px">
+        <img src="assets/logos-clair/koino.svg" alt="Koïno" style="height:42px">
+        <img src="assets/logos-clair/m6.svg" alt="M6" style="height:35px">
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- ============ EXEMPLES DE CAS D'USAGE : panneau fixe + textes qui défilent (cas.css, cas.js, cas-demos.html) ============ -->
 <section class="cx" id="cas" data-case="0" aria-label="Exemples de cas d'usage">
@@ -97,10 +99,17 @@
       <p>Quatre exemples de ce que nous construisons. Chaque outil se conçoit avec vos équipes, selon vos besoins.</p>
     </div>
     <div class="cx-grid">
+      <div class="cx-tabs" role="tablist" aria-label="Cas d'usage">
+        <button type="button" class="cx-tab" role="tab" aria-selected="true">Livrables</button>
+        <button type="button" class="cx-tab" role="tab" aria-selected="false">Relecture</button>
+        <button type="button" class="cx-tab" role="tab" aria-selected="false">Socle d'informations</button>
+        <button type="button" class="cx-tab" role="tab" aria-selected="false">Automatisations</button>
+      </div>
       <div class="cx-panel">
         <cas-demos></cas-demos>
         <button type="button" class="cx-pause" aria-label="Mettre l'animation en pause" aria-pressed="false"><svg class="i-pause" viewBox="0 0 16 16" fill="currentColor"><rect x="4" y="3" width="2.6" height="10" rx="1"/><rect x="9.4" y="3" width="2.6" height="10" rx="1"/></svg><svg class="i-play" viewBox="0 0 16 16" fill="currentColor"><path d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5z"/></svg></button>
       </div>
+      <p class="cx-rotate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M20.5 9a8.5 8.5 0 0 1-1.6 7.4M19.6 13.6l-.7 2.8-2.8-.6"/></svg>Tournez votre téléphone pour voir l'animation en grand.</p>
       <div class="cx-list">
         <article class="cx-item on">
           <div class="cx-pin">
@@ -174,8 +183,8 @@
       <article class="tm-card">
         <div class="tm-ph"><img src="assets/kevin.webp" alt="Kevin Sananikone" width="800" height="800" loading="lazy">
           <div class="tm-cap"><div><h3>Kevin Sananikone</h3><small>Ingénieur IA, responsable technique</small></div><a class="tm-in" href="https://www.linkedin.com/in/kevin-sananikone-8b1757154/" target="_blank" rel="noopener" aria-label="LinkedIn de Kevin Sananikone"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.6 5.6h2.1V13H3.6zM4.65 2.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4zM7.1 5.6h2v1c.3-.6 1-1.2 2.2-1.2 2.3 0 2.7 1.5 2.7 3.5V13h-2.1V9.3c0-.9 0-2-1.2-2s-1.4.9-1.4 1.9V13H7.1z"/></svg></a></div></div>
-        <div class="tx"><div><p class="lead">Conçoit et construit vos outils, jusqu'à leur mise en service.</p><p class="det">Responsable technique, Kevin conçoit l'architecture, développe et met en service chaque outil. Avant Recoupe, il a dirigé en indépendant le développement d'applications pour OMNES Éducation, CDC Biodiversité ou Hublo.</p></div>
-          <div><span class="chips-h">Sur chaque projet</span><div class="chips"><span>Architecture</span><span>Développement</span><span>Mise en service</span><span>Suivi</span></div></div></div>
+        <div class="tx"><div><p class="lead">Conçoit et construit vos outils, jusqu'à leur mise en service.</p><p class="det">Ingénieur diplômé de Télécom SudParis, Kevin a d'abord développé des applications web de bout en bout, puis a pris le virage de l'IA&nbsp;: agents, systèmes RAG et automatisations intégrés aux outils de ses clients. Il a notamment travaillé pour OMNES Éducation, CDC Biodiversité ou Hublo.</p></div>
+          <div><span class="chips-h">Sur chaque projet</span><div class="chips"><span>Cadrage</span><span>Architecture</span><span>Développement</span><span>Mise en production</span></div></div></div>
       </article>
       <article class="tm-card">
         <div class="tm-ph"><img src="assets/arnaud.webp" alt="Arnaud Weiss" width="800" height="800" loading="lazy">
@@ -223,10 +232,10 @@
       <h2 class="h2">Les questions que vous vous posez sûrement.</h2>
     </div>
     <div class="qa">
-      <details open><summary>Nous utilisons déjà Claude. Pourquoi passer par vous ?</summary><p>Nous ne remplaçons pas Claude : nous l'utilisons, aux côtés d'autres modèles. Ce que nous construisons, c'est ce qui manque entre Claude et vos dossiers : l'accès à vos pièces, des citations vérifiables, des droits d'accès par équipe et un traitement des données en Europe. Pour une question ponctuelle sur un document, Claude dans le navigateur suffit très bien : les deux usages cohabitent.</p></details>
-      <details><summary>Quelle est la différence entre vos outils et Claude Cowork ?</summary><p>Claude Cowork est un assistant généraliste : il ne connaît ni vos modèles ni vos dossiers, et il faut lui fournir les documents à chaque fois. Nos outils sont branchés sur vos pièces, pensés pour une tâche précise de votre cabinet et partent de vos modèles Excel et PowerPoint. Ils vont chercher l'information dans le dossier au lieu de vous faire coller des documents, et chaque chiffre renvoie à la page d'où il vient : une citation introuvable dans la page citée est rejetée automatiquement. Votre équipe n'a pas de requêtes à écrire.</p></details>
+      <details><summary>Nous utilisons déjà Claude. Pourquoi passer par vous ?</summary><p>Nous ne remplaçons pas Claude : nous l'utilisons, aux côtés d'autres modèles. Ce que nous construisons, c'est ce qui manque entre Claude et vos dossiers : l'accès à vos pièces, des citations vérifiables, des droits d'accès par équipe et un traitement des données en Europe. Pour une question ponctuelle sur un document, Claude dans le navigateur suffit très bien : les deux usages cohabitent.</p></details>
+      <details><summary>Quelle est la différence entre vos outils et Claude Cowork ?</summary><p>Claude Cowork est un excellent assistant généraliste, mais il a deux limites pour un cabinet de M&amp;A. La première tient à la confidentialité&nbsp;: d'après la documentation d'Anthropic, Cowork n'est pas couvert par la «&nbsp;zéro conservation&nbsp;» des données. Chez Anthropic, il faut donc choisir entre l'agent et la garantie. Avec nos outils, vous avez les deux. La seconde tient au volume&nbsp;: Claude, dans Cowork comme dans le chat, ne lit qu'une quantité limitée de documents à la fois, et sa précision baisse à mesure qu'on lui en donne. Nos outils se branchent sur l'ensemble des documents de votre cabinet, sans limite de volume, vont chercher les pages utiles, et chaque chiffre renvoie à la page d'où il vient.</p></details>
       <details><summary>Claude Enterprise n'est-il pas déjà sécurisé ?</summary><p>Pour le chat, oui. Mais toutes les versions de Claude n'offrent pas les mêmes garanties : d'après la documentation d'Anthropic, le chat et Cowork ne bénéficient pas de la « zéro conservation » des données, et les données sont stockées aux États-Unis par défaut. Nos outils appellent Claude par son accès professionnel, dans une région européenne, où le stockage comme le traitement restent en Europe.</p></details>
-      <details><summary>Quelle IA utilisez-vous ?</summary><p>Nos outils fonctionnent avec n'importe quel modèle du marché. Nous travaillons le plus souvent avec ceux de Claude (Anthropic), Gemini (Google) et OpenAI, et certains clients préfèrent des modèles open source. La plupart des entreprises préfèrent aujourd'hui Claude. Mais le leader de l'IA d'aujourd'hui ne sera pas forcément celui de demain : nos outils ne dépendent d'aucun fournisseur, et il suffit de changer une ligne de code pour passer d'un modèle à l'autre, sans refaire l'outil.</p></details>
+      <details><summary>Quelle IA utilisez-vous ?</summary><p>Nos outils fonctionnent avec n'importe quel modèle du marché. Nous travaillons le plus souvent avec ceux de Claude (Anthropic), Gemini (Google) et OpenAI, et certains clients préfèrent des modèles open source. La plupart des entreprises préfèrent aujourd'hui Claude. Mais le leader de l'IA d'aujourd'hui ne sera pas forcément celui de demain : nos outils ne dépendent d'aucun fournisseur. Changer de modèle est un simple réglage, sans refaire l'outil.</p></details>
       <details><summary>À quelles sources l'outil se connecte-t-il ?</summary><p>À vos outils internes et aux bases auxquelles vous êtes abonnés, par exemple Mergermarket, S&amp;P Capital IQ, PitchBook ou Pappers, sous réserve que leurs conditions générales d'utilisation l'autorisent. Nous ne contournons jamais les conditions générales des services que vous utilisez.</p></details>
       <details><summary>Nos données sont-elles en sécurité ? Quelles normes de conformité respectez-vous ?</summary><p>Vos données sont traitées dans l'Union européenne, dans le respect du RGPD, et ne servent jamais à entraîner un modèle. Chaque dossier a son propre espace, avec des droits d'accès par équipe et un journal des opérations. Si votre politique l'exige, l'outil peut être installé sur votre propre infrastructure. Nous répondons à votre questionnaire de sécurité fournisseur.</p></details>
       <details><summary>Combien de temps avant d'avoir un premier outil ?</summary><p>Nous partons d'un de vos dossiers. Un premier prototype est testé par votre équipe sur un cas réel avant tout déploiement. Le délai est fixé dès le premier échange, selon l'outil et les sources à connecter.</p></details>
@@ -244,7 +253,7 @@
     <div class="wrap">
       <span class="kick">Parlons de votre prochain projet</span>
       <h2 class="h2">Voyons ce que l'IA fait sur un de vos dossiers.</h2>
-      <p class="lead">Un premier appel gratuit de 30 minutes.</p>
+      <p class="lead">Un premier appel gratuit de 30&nbsp;minutes.</p>
       <div class="ctas"><a class="btn btn-white" href="https://calendly.com/sananikone-kevin/30min" target="_blank" rel="noopener">Réserver un appel</a></div>
     </div>
   </section>
@@ -268,6 +277,6 @@
 
 <script src="ab.js?v=1"></script>
 <script src="script.js?v=17"></script>
-<script src="cas.js?v=20"></script>
+<script src="cas.js?v=24"></script>
 </body>
 </html>
