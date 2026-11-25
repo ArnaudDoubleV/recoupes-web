@@ -229,7 +229,7 @@ async function demo4(d,tk){
 
   // la fenêtre (860 × 560) est mise à l'échelle pour tenir entière dans le panneau
   // Téléphone et tablette (≤ 900 px) : onglets ; la fenêtre reste entière, mise à l'échelle sur la largeur
-  const mobile = matchMedia('(max-width: 900px)');
+  const mobile = matchMedia('(max-width: 900px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px)');
   const tabs = [...sec.querySelectorAll('.cx-tab')];
   const fit = () => { const w = host.clientWidth; scaler.style.transform = `scale(${w / 860})`; host.style.height = (w * 560 / 860) + 'px'; sec.style.setProperty('--ph', panel.offsetHeight + 'px'); };
   new ResizeObserver(fit).observe(panel); fit();

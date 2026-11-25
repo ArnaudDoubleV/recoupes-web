@@ -20,7 +20,7 @@
 .cx-bgs::after { content: ""; position: absolute; inset: 0; opacity: .28; mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-.cx-in { width: min(var(--wrap), 100% - 2 * var(--pad)); margin-inline: auto; }
+.cx-in { width: min(var(--wrap), 100% - 2 * var(--gut, var(--pad))); margin-inline: auto; }
 
 .cx-head { max-width: 820px; margin-bottom: 80px; }
 .cx-eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 600 15px/1 Inter, sans-serif; color: var(--sun-4); }
@@ -132,7 +132,7 @@
 @media (max-width: 1180px) {
   .tm-grid { grid-template-columns: 1fr; max-width: 760px; }
 }
-@media (max-width: 900px) {
+@media (max-width: 900px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) {
   .cx-grid { grid-template-columns: minmax(0, 1fr); }
   .cx-panel { position: relative; top: 0; }
   .cx-item, .cx-item:first-child, .cx-item:last-child { min-height: 0; padding: 32px 0; opacity: 1; }
@@ -175,7 +175,7 @@
 .cx-item, .cx-item:first-child, .cx-item:last-child { min-height: calc(var(--ph, 560px) + 50vh); padding: 0; display: block; }
 .cx-item:last-child { min-height: calc(var(--ph, 560px) + 25vh); }
 .cx-pin { position: sticky; top: max(90px, calc(50vh - var(--ph, 560px) / 2 + 30px)); min-height: var(--ph, 560px); display: flex; flex-direction: column; justify-content: center; padding: 24px 0; }
-@media (max-width: 900px) {
+@media (max-width: 900px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) {
   .cx-item, .cx-item:first-child, .cx-item:last-child { min-height: 0; }
   .cx-pin { position: static; min-height: 0; }
 }
@@ -206,7 +206,7 @@
    Onglets en haut, titre du cas, animation en grand, détails en dessous.
    Les blocs de texte restent dans le HTML ; ils sont replacés dans la grille et superposés. */
 .cx-tabs { display: none; }
-@media (max-width: 900px) {
+@media (max-width: 900px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) {
   #cas.cx { padding: 80px 0 72px; }
   .cx-head { margin-bottom: 32px; }
   .cx-head p { font-size: 16.5px; }
@@ -232,7 +232,7 @@
   .cx-meta > div { padding: 12px 0; }
   .cx-auto li { padding: 9px 0; font-size: 14.5px; }
 }
-@media (min-width: 640px) and (max-width: 900px) {
+@media (min-width: 640px) and (max-width: 900px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) {
   .cx-panel { padding: 16px; border-radius: 24px; }
   .cx-auto { grid-template-columns: 1fr 1fr; }
   .cx-auto li:nth-child(2) { border-top: 0; }
@@ -257,6 +257,7 @@
   .cx-item .cx-meta { margin-top: 64px; }
 }
 /* Téléphone tenu à l'horizontale : l'animation entière tient dans la hauteur de l'écran */
-@media (max-width: 960px) and (max-height: 500px) and (orientation: landscape) {
-  .cx-panel { width: min(100%, calc((100svh - 32px) * 860 / 560 + 32px)); justify-self: center; }
+@media (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) {
+  .cx-panel { width: min(100%, calc((100svh - 12px) * 860 / 560)); justify-self: center; padding: 0; border-radius: 14px; }
+  .cx-panel cas-demos { border-radius: 14px; overflow: hidden; }
 }
