@@ -31,6 +31,10 @@
   addEventListener('resize', onScroll, { passive: true });
   paint();
 
+  /* la barre s'efface devant le bloc de prise de rendez-vous et le pied de page, qui portent déjà le bouton */
+  const navEl = document.querySelector('.nav'), outro = document.querySelector('.outro');
+  if (navEl && outro) new IntersectionObserver(([e]) => navEl.classList.toggle('is-off', e.isIntersecting), { rootMargin: '0px 0px -25% 0px' }).observe(outro);
+
   /* ---------- 2. onglets des cas d'usage : pastille glissante, jauge de la démo, balayage ---------- */
   const row = document.querySelector('.cx-tabs'), panel = document.querySelector('.cx-panel');
   if (!row || !panel) return;

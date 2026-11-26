@@ -656,3 +656,16 @@ html, body { background: var(--night); }
 @media (max-width: 560px) {
   .hero { min-height: 100lvh; padding-bottom: calc(100lvh - 100svh); }
 }
+/* Téléphone : une fois le haut de page passé, la barre descend en bas de l'écran, à portée de pouce (26/11) */
+@media (max-width: 560px) {
+  .nav { transition: opacity .25s ease, transform .25s ease; }
+  .nav:not(.is-solid) { animation: nav-top .3s cubic-bezier(.2,.7,.2,1) both; }
+  .nav.is-solid { top: auto; bottom: max(12px, calc(env(safe-area-inset-bottom) + 6px)); animation: nav-dock .34s cubic-bezier(.2,.7,.2,1) both; }
+  .nav.is-solid .nav-in { background: rgba(255,255,255,.94); box-shadow: 0 0 0 1px rgba(0,0,0,.07), 0 10px 30px -10px rgba(0,0,0,.32); }
+  .nav.is-solid .nav-prog { bottom: auto; top: 0; }
+  .nav.is-off { opacity: 0; transform: translateY(14px); }
+  .nav.is-off .nav-in { pointer-events: none; }
+}
+@keyframes nav-dock { from { opacity: 0; transform: translateY(16px); } }
+@keyframes nav-top { from { opacity: 0; transform: translateY(-10px); } }
+@media (prefers-reduced-motion: reduce) { .nav, .nav.is-solid { animation: none !important; transition: none; } }
