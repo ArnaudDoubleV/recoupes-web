@@ -709,3 +709,11 @@ html, body { background: var(--night); }
 .tm-tk li { flex: none; display: inline-flex; align-items: center; gap: 8px; padding-right: 26px; font: 500 14px/1 Inter, sans-serif; color: #3C3C43; white-space: nowrap; }
 @media (max-width: 860px) { .tm-tk { flex-direction: column; align-items: flex-start; gap: 16px; margin-top: 36px; } .tm-tk .tkrow { width: 100%; align-self: stretch; } }
 @media (prefers-reduced-motion: reduce) { .tm-tk ul { animation-duration: 80s; } }
+/* logos dimensionnés par script.js (surface égale) : pas de zoom hérité, image cachée tant qu'elle n'est pas mesurée */
+.hero .logos-row.mq img { zoom: 1 !important; height: auto; width: auto; }
+.hero .logos-row.mq img:not([style*="visible"]) { visibility: hidden; }
+/* écart constant entre deux logos (plutôt que des emplacements de même largeur) : rythme régulier quelle que soit la forme du logo */
+.hero .logos-row.mq .lgs { width: auto !important; padding-inline: 30px; }
+@media (max-width: 860px) { .hero .logos-row.mq .lgs { padding-inline: 24px; } }
+@media (max-width: 560px) { .hero .logos-row.mq .lgs { padding-inline: 20px; } }
+@media (max-width: 860px) { .hero .malt { align-self: center; } }
