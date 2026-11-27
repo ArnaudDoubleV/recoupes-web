@@ -63,3 +63,35 @@ document.querySelectorAll('.ev').forEach(s => ioEv.observe(s));
     groups.forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('rv'); io.observe(el); }));
   }
 }
+
+// « Ils nous font confiance » : défilement continu partout (27/11). Les logos d'origine restent la première série ;
+// les copies sont masquées aux lecteurs d'écran. Assez de séries pour couvrir la largeur, vitesse constante.
+(() => {
+  const row = document.querySelector('.hero .logos-row'); if (!row) return;
+  const set = [...row.querySelectorAll('img')].map(img => { const s = document.createElement('span'); s.className = 'lgs'; s.append(img); return s; });
+  const track = document.createElement('div'); track.className = 'lgt'; set.forEach(s => track.append(s)); row.append(track); row.classList.add('mq');
+  const layout = () => {
+    track.querySelectorAll('.more').forEach(e => e.remove());
+    const setW = set.reduce((w, s) => w + s.getBoundingClientRect().width, 0); if (!setW) return;
+    const k = Math.max(1, Math.ceil(row.clientWidth / setW));
+    for (let n = 0; n < 2 * k - 1; n++) set.forEach(s => { const c = s.cloneNode(true); c.classList.add('more'); c.setAttribute('aria-hidden', 'true'); c.querySelector('img').alt = ''; track.append(c); });
+    track.style.animationDuration = (setW * k / (innerWidth < 600 ? 50 : 40)).toFixed(1) + 's';
+  };
+  addEventListener('resize', () => { clearTimeout(window.__rl); window.__rl = setTimeout(layout, 150); });
+  if (document.readyState === 'complete') layout(); else addEventListener('load', layout);
+})();
+
+// Stack technique (équipe) : défilement continu, assez de copies pour couvrir la largeur, vitesse constante (27/11)
+(() => {
+  const r = document.querySelector('.tm-tk .tkrow'); if (!r) return;
+  const ul = r.querySelector('ul'); const set = [...ul.children];
+  const layout = () => {
+    ul.querySelectorAll('.more').forEach(e => e.remove());
+    const setW = set.reduce((w, e) => w + e.getBoundingClientRect().width, 0); if (!setW) return;
+    const k = Math.max(1, Math.ceil(r.clientWidth / setW));
+    for (let n = 0; n < 2 * k - 1; n++) set.forEach(e => { const c = e.cloneNode(true); c.classList.add('more'); c.setAttribute('aria-hidden', 'true'); ul.append(c); });
+    ul.style.animationDuration = (setW * k / 40).toFixed(1) + 's';
+  };
+  addEventListener('resize', () => { clearTimeout(window.__rt); window.__rt = setTimeout(layout, 150); });
+  if (document.readyState === 'complete') layout(); else addEventListener('load', layout);
+})();

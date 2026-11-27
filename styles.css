@@ -669,3 +669,43 @@ html, body { background: var(--night); }
 @keyframes nav-dock { from { opacity: 0; transform: translateY(16px); } }
 @keyframes nav-top { from { opacity: 0; transform: translateY(-10px); } }
 @media (prefers-reduced-motion: reduce) { .nav, .nav.is-solid { animation: none !important; transition: none; } }
+
+/* ===== « Ils nous font confiance » : défilement continu sur toutes les tailles d'écran (27/11, même système que le site de Kevin) =====
+   script.js place les logos dans une piste répétée assez de fois pour couvrir la largeur (deux moitiés identiques = boucle sans couture),
+   emplacements de même largeur, bords fondus. Survol : le logo reprend ses couleurs. */
+.hero .logos-row.mq { display: block !important; position: relative; overflow: hidden; flex: 1 1 auto; min-width: 0; width: 100%; max-width: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.hero .logos-row.mq .lgt { display: flex; align-items: center; width: max-content; animation: recoupeLogos 30s linear infinite; }
+.hero .logos-row.mq .lgs { flex: none; width: 168px; display: flex; align-items: center; justify-content: center; }
+.hero .logos-row.mq img { max-width: none; }
+@keyframes recoupeLogos { to { transform: translateX(-50%); } }
+@media (max-width: 860px) { .hero .logos-row.mq .lgs { width: 136px; } }
+@media (max-width: 560px) { .hero .logos-row.mq .lgs { width: 118px; } }
+@media (prefers-reduced-motion: reduce) { .hero .logos-row.mq .lgt { animation-duration: 90s; } }
+@media (min-width: 861px) { .hero .logos .wrap { flex-wrap: nowrap; } .hero .logos-row.mq { width: auto; } }
+
+/* ===== Menu : lien vers le portfolio, séparé des liens de la page par un trait (27/11, même principe que le site de Kevin) ===== */
+.nav-links a.pf { margin-left: -6px; padding-left: 28px; color: #fff; font-weight: 600; }
+.nav-links a.pf::before { content: ""; position: absolute; left: 0; top: 50%; width: 1px; height: 18px; translate: 0 -50%; background: rgba(255,255,255,.22); }
+.nav.is-solid .nav-links a.pf { color: var(--sun-4); }
+.nav.is-solid .nav-links a.pf::before { background: rgba(0,0,0,.14); }
+@media (min-width: 861px) and (max-width: 1100px) { .nav-links { gap: 22px; } .nav-links a.pf { padding-left: 22px; } }
+
+/* ===== Haut de page : note Malt cliquable sous les boutons (27/11) ===== */
+.hero .malt { align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; margin-top: 2px; font-size: 14px; color: rgba(245,242,239,.78); white-space: nowrap; }
+.hero .malt img { width: 22px; height: 22px; border-radius: 6px; flex: none; }
+.hero .malt .mst { color: #E3A008; letter-spacing: 1px; }
+.hero .malt:hover > span:last-child { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 560px), (orientation: landscape) and (max-height: 520px) and (max-width: 1100px) { .hero .malt { align-self: center; } }
+@media (max-width: 560px) { .hero .malt { font-size: 13px; gap: 7px; } .hero .malt img { width: 20px; height: 20px; } .hero .malt .mst { font-size: 12px; letter-spacing: 0; } .hero .malt .gr { display: none; } }
+
+/* ===== Équipe : stack technique qui défile en continu, comme sur le site de Kevin (27/11) ===== */
+.ico { display: inline-block; flex: none; width: 18px; height: 18px; color: #6E6E73; background: currentColor; -webkit-mask: var(--src) center / contain no-repeat; mask: var(--src) center / contain no-repeat; }
+.tm-tk { display: flex; align-items: center; gap: 32px; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line, #E3E3E7); }
+.tm-tk-t { flex: none; margin: 0; font: 500 12.5px/1 Inter, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--grey, #6E6E73); }
+.tm-tk .tkrow { position: relative; flex: 1; min-width: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.tm-tk ul { list-style: none; margin: 0; padding: 0; display: flex; width: max-content; animation: recoupeLogos 28s linear infinite; }
+.tm-tk li { flex: none; display: inline-flex; align-items: center; gap: 8px; padding-right: 26px; font: 500 14px/1 Inter, sans-serif; color: #3C3C43; white-space: nowrap; }
+@media (max-width: 860px) { .tm-tk { flex-direction: column; align-items: flex-start; gap: 16px; margin-top: 36px; } .tm-tk .tkrow { width: 100%; align-self: stretch; } }
+@media (prefers-reduced-motion: reduce) { .tm-tk ul { animation-duration: 80s; } }
